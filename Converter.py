@@ -10,8 +10,8 @@ def convert_value(value):
 
     number = int(value, 16)
 
-    if number < 0 or number > 0xFFFFFFFFFFFFFFFF:
-        raise ValueError("Value exceeds 8 bytes")
+    if number > 0xFFFFFFFFFFFFFFFF:
+        raise ValueError("Value exceeds 8 bytes (64 bits)")
 
     hex_value = f"{number:016X}"
     decimal_value = number
@@ -23,9 +23,23 @@ def convert_value(value):
         for b in raw_bytes
     )
 
-    print(f"Hexadecimal : 0x{hex_value}")
+    print(f"\nHexadecimal : 0x{hex_value}")
     print(f"Decimal     : {decimal_value}")
     print(f"ASCII       : {ascii_value}")
+    print("-" * 40)
 
-user_input=(input("Enter a hexadecimal value (with or without 0x prefix): "))
-convert_value(user_input)
+
+while True:
+    try:
+        user_input = input(
+            "\nEnter hexadecimal value (or 'exit' to quit): "
+        )
+
+        if user_input.strip().lower() in ("exit", "quit"):
+            print("Exiting...")
+            break
+
+        convert_value(user_input)
+
+    except ValueError as e:
+        print(f"Error: {e}")
